@@ -1,43 +1,26 @@
+#include <vector>
 #include <iostream>
-#include <string>
-using namespace std;
 
-string printArray(int arr[], int arrSize) {
-    string result = "[";
-    for (int i = 0; i < arrSize - 1; i++) {
-        result += to_string(arr[i]);
-        result += ", ";
-    }
-    // last element
-    result += to_string(arr[arrSize - 1]) + "]";
-    return result;
+template <typename Container>
+void printContainer(const Container& container, std::string sep = " ") {
+    for (auto elem : container) {
+        std::cout << elem << sep;
+}
+    std::cout << std::endl;
 }
 
-int main(int argc, char *argv[]) {
-    int size;
-    cout << "Please enter any size for two vectors consisting of randomly generated numbers between 0 and 100: ";
-    cin >> size;
-    
-    int vectorA[size];
-    int vectorB[size];
-    int vectorC[size];
-
-    // Fill both vectors with <size> random numbers
-    srand((unsigned int)time(NULL)); // set seed
-    for (int i = 0; i < size; i++) {
-        vectorA[i]=rand()%100;
-        vectorB[i]=rand()%100;
+template <typename Container>
+void mapContainer(const Container& a, const Container& b, Container& result) {
+    for (auto ait = a.cbegin(), bit = b.cbegin(); ait != a.cend() && bit != b.cend(); ++ait, ++bit) {
+        result.push_back(*ait + *bit);
     }
+}
 
-    // Add vectors
-    for (int i = 0; i < size; i++) {
-       vectorC[i] = vectorA[i] + vectorB[i];
-    }
+int main() {
+    std::vector<int> a = {1, 2, 3, 4, 5};
+    std::vector<int> b = {1, 2, 3, 4, 5};
+    std::vector<int> c;
 
-    cout << "\nVector A:" << endl;
-    cout << printArray(vectorA, sizeof(vectorA) / sizeof(int)) + "\n"<< endl;
-    cout << "Vector B:" << endl;
-    cout << printArray(vectorB, sizeof(vectorB) / sizeof(int)) + "\n"<< endl;
-    cout << "Vector A + B:" << endl;
-    cout << printArray(vectorC, sizeof(vectorC) / sizeof(int)) + "\n"<< endl;
+    mapContainer<std::vector<int>>(a, b, c);
+    printContainer<std::vector<int>>(c);
 }
